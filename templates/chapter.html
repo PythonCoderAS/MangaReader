@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% if combined %}
+    <title>Combined • {{ manga_name }}</title>
+{% else %}
+    <title>{% if " - " in name %}{{ name.partition("-")[0] }}{% else %}Chapter {{ name.strip() }}{% endif %}</title>
+{% endif %}
+    <style>
+        img {
+            object-fit: cover;
+            width: 100%;
+        }
+    </style>
+{% if not combined %}
+    <script src="/static/nav.js"></script>
+    <script src="/static/history-set.js"></script>
+{% endif %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/bootstrap.min.css" crossorigin="anonymous">
+</head>
+<body>
+<div style="margin: 1%">
+    {% if combined %}
+        <h1 class="text-center">All Pages of {{ manga_name }}</h1>
+{% else %}
+    <h1 class="text-center">{% if " - " in name %}{{ name.partition("-")[0] }}{% else %}Chapter {{ name.strip() }}{% endif %}</h1>
+{% endif %}
+    <p class="text-secondary"><a href="/">Home</a> / <a href="/{{ slug }}">{{ manga_name }}</a> / <strong>{{ name }}</strong></p>
+    <p class="lead">There {% if count == 1 %} is {% else %} are {% endif %} <strong>{{ count }}</strong> {% if count == 1 %}page{% else %}
+        pages{% endif %} that can be read.</p>
+    {% for page_num, file_name in pages %}
+        <img src="/{{ slug }}/{% if combined %}{{ file_name }}{% else %}{{ name.replace(' ', '_') }}/{{ file_name }}{% endif %}" alt="Page {{ page_num }}" id="{{ page_num }}"
+             onclick="alert({{ page_num }})">
+        <hr>
+    {% endfor %}
+{% if not combined %}
+        <div class="row">
+            <div class="col-sm text-left"><a class="btn btn-primary" href="/previous/{{ slug }}/{{ name.replace(' ', '_') }}" role="button"
+                                             id="previous-button">←
+                Previous</a></div>
+            <div class="col-sm text-right"><a class="btn btn-primary" href="/next/{{ slug }}/{{ name.replace(' ', '_') }}" role="button"
+                                              id="next-button">Next →</a>
+            </div>
+        </div>
+{% endif %}
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+</body>
+</html>
